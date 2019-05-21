@@ -69,22 +69,19 @@ string traduzirLinha(string palavra, char dicionario[][4]){
 
 
     string tmp = "";
-    int contador = 0;
     string traduzido = "";
 
     for(int i = 0; i < strlen(palavra.c_str()); i++){
         tmp += palavra[i];
         // cout << tmp << endl;
-        contador += 1;
         // cout << i;
-        if(contador == 3){
+        if(strlen(tmp.c_str()) == 3){
             // cout << tmp << traduzirCaractere(tmp,dicionario) << endl;
 
 
             traduzido += traduzirCaractere(tmp, dicionario);
             // cout<< traduzido<< endl;
             tmp = "";
-            contador = 0;
         }
 
         if((i + 1) == strlen(palavra.c_str()) && tmp == ":"){
