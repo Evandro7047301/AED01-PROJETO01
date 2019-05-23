@@ -337,6 +337,7 @@ int main(){
     // pilha.printPilha();
     // cout<<"/n";
     // cout << pilha.pilhaEstaVazia()<< "\n";
+    // cout << "\n";    
     //------TESTE-PILHA-------
 
     //------TESTE-FILA------
@@ -353,7 +354,8 @@ int main(){
     // fila.printFila();
     // cout<<"\n";
     // cout << fila.filaEstaVazia()<< "\n";
-    // // ------TESTE-FILA-------
+    // cout << "\n";
+    //------TESTE-FILA-------
 
 
 
