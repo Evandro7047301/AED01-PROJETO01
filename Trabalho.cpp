@@ -5,6 +5,53 @@ using namespace std;
 
 //---------------------------Evandro--------------------------------------------
 
+//----------------------------NÓ------------------------------------------------
+template <class TYPE>
+class No{
+public:
+    No(TYPE &);
+    TYPE getData();
+
+    TYPE data;
+    No<TYPE> *proximoPtr;//proximo no da lista
+};
+
+template<class TYPE>
+No<TYPE>::No(TYPE &info)
+{
+    data = info;
+    proximoPtr = 0;
+}
+
+template<class TYPE>
+
+TYPE No<TYPE>::getData(){
+    return data;
+}
+
+template<class TYPE>
+
+class Lista{
+
+public:
+    Lista();//construtor
+    ~Lista();//destrutor
+
+    void inserirFrente(TYPE &);
+    void inserirAtras(TYPE &);
+    bool removerFrente(TYPE &);
+    bool removerAtras(TYPE &);
+    bool estaVazia();
+    void print();
+private:
+    No<TYPE> *primeiroPtr;
+    No<TYPE> *ultimoPtr;
+
+    //Alocar novo no;
+    No<TYPE> *getNovoNo(TYPE &);
+};
+//----------------------------NÓ------------------------------------------------
+
 //---------------------------Evandro--------------------------------------------
 
 
