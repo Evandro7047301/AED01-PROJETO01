@@ -184,7 +184,7 @@ No<TYPE> *Lista<TYPE>::getNovoNo(TYPE &valor){
 template<class TYPE>
 void Lista<TYPE>::print(){
     if(estaVazia()){
-        cout<< "A lista está vazia"<<"\n";
+        cout<< "A lista esta vazia"<<"\n";
         return;
     }
 
