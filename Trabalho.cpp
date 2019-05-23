@@ -223,48 +223,38 @@ public:
 };
 //----------------------------PILHA---------------------------------------------
 
+//----------------------------FILA----------------------------------------------
+
+template <class TYPE>
+class Fila: private Lista<TYPE>{
+public:
+
+    void enfileira(TYPE &data){
+        Lista<TYPE>::inserirFrente(data);
+    }
+
+    bool desenfileira(TYPE &data){
+        Lista<TYPE>::removerFrente(data);
+    }
+
+    bool filaEstaVazia(){
+        return Lista<TYPE>::estaVazia();
+    }
+
+    void printFila(){
+        Lista<TYPE>::print();
+    }
+};
+
+//----------------------------FILA----------------------------------------------
+
 //---------------------------Evandro--------------------------------------------
 
 
 
 //---------------------------Vinicius-------------------------------------------
 
-// class Fila {
-// private:
-//     int* frente;
-//     int* tras;
-//     char letra_;
-//
-//     bool isEmpty();
-// public:
-//     Fila();
-//     ~Fila();
-//
-//     void enfileira(char);
-//     void desenfilera(char);
-// };
-//
-// Fila::Fila(){
-//     this->frente = new char;
-//     this->frente.proximo = NULL;
-//     this->tras = this->frente;
-// }
-//
-// void Fila::enfileira(Node letra){
-//     this->tras.proximo = new char;
-//     this->tras = this->tras.proximo;
-//     this->tras.letra_ = letra;
-//     this->tras.proximo = NULL;
-// }
-//
-// void Fila::desenfilera(Node letra){
-//     aux = this->frente;
-//     this->frente = this->frente.proximo;
-//     letra = this->frente.letra_;
-//     delete aux;
-// }
-
-/*      Fila Class endl */
+//CODIGO AQUI
 
 //---------------------------Vinicius-------------------------------------------
 
@@ -332,10 +322,8 @@ string traduzirString(){
 
     return traduzido;
 }
-
-
 int main(){
-    
+//---------------------------Evandro--------------------------------------------
     //------TESTE-PILHA------
     // Pilha<int> pilha;
     // int numero = 1;
@@ -347,11 +335,11 @@ int main(){
     // pilha.printPilha();
     // pilha.pop(numero);
     // pilha.printPilha();
-    //cout<<"/n";
+    // cout<<"/n";
     // cout << pilha.pilhaEstaVazia()<< "\n";
     //------TESTE-PILHA-------
-    
-    // // ------TESTE-FILA------
+
+    //------TESTE-FILA------
     // Fila<int> fila;
     // int numero01 = 1;
     // int numero02 = 2;
@@ -367,12 +355,11 @@ int main(){
     // cout << fila.filaEstaVazia()<< "\n";
     // // ------TESTE-FILA-------
 
-        
+
+
     //------Teste da funcao traduzir string
     //cout << traduzirString();
     //------Teste da funcao traduzir string
-    return 0;
-
     //-dicionario-//
     // tabelaHash th;
     // th.insere (":::", "A");
@@ -404,7 +391,14 @@ int main(){
     // th.insere ("---", " ");
     // th.insere ("~", "~");
     //-dicionario-//
+//---------------------------Evandro--------------------------------------------
 
+//--------------------------Vinicius--------------------------------------------
+
+//CODIGO AQUI
+
+//--------------------------Vinicius--------------------------------------------
+
+return 0;
 
 }
-//---------------------------Evandro--------------------------------------------
