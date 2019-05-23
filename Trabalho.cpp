@@ -335,8 +335,26 @@ string traduzirString(){
 
 
 int main(){
+    
+    //------TESTEPILHA------
+    Pilha<int> pilha;
+    int numero = 1;
+    pilha.push(numero);
+    pilha.printPilha();
+    pilha.push(numero);
+    pilha.printPilha();
+    pilha.pop(numero);
+    pilha.printPilha();
+    pilha.pop(numero);
+    pilha.printPilha();
+    cout << pilha.pilhaEstaVazia()<< "\n";
+    //------TESTEPILHA-------
 
-    cout << traduzirString();
+    
+    
+    //------Teste da funcao traduzir string
+    //cout << traduzirString();
+    //------Teste da funcao traduzir string
     return 0;
 
     //-dicionario-//
@@ -370,28 +388,6 @@ int main(){
     // th.insere ("---", " ");
     // th.insere ("~", "~");
     //-dicionario-//
-
-
-
-
-
-
-    // const int TAM = 100;
-    // char vetor[][4] = {":::","A",".::","B",":.:","C","::.","D",":..","E",".:.","F","..:","G","...","H","|::","I",":|:","J","::|","K","|.:","L",".|:","M",".:|","N","|:.","O",":|.","P",":.|","Q","|..","R",".|.","S","..|","T",".||","U","|.|","V","||.","W","-.-","X",".--","Y","--.","Z","---"," ","~","~"};
-    // string traduzido;
-    //
-    // string recebido;
-    //
-    // while(true){
-    //
-    //     getline(cin, recebido);
-    //     if(recebido == "~"){
-    //         traduzido += "~";
-    //         break;
-    //     }
-    //     traduzido += traduzirLinha(recebido, vetor) + "\n";
-    // }
-    // cout<<traduzido;
 
 
 }
