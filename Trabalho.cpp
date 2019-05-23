@@ -336,20 +336,20 @@ string traduzirString(){
 
 int main(){
     
-    //------TESTEPILHA------
-    Pilha<int> pilha;
-    int numero = 1;
-    pilha.push(numero);
-    pilha.printPilha();
-    pilha.push(numero);
-    pilha.printPilha();
-    pilha.pop(numero);
-    pilha.printPilha();
-    pilha.pop(numero);
-    pilha.printPilha();
-    cout << pilha.pilhaEstaVazia()<< "\n";
-    //------TESTEPILHA-------
-
+    //------TESTE-PILHA------
+    // Pilha<int> pilha;
+    // int numero = 1;
+    // pilha.push(numero);
+    // pilha.printPilha();
+    // pilha.push(numero);
+    // pilha.printPilha();
+    // pilha.pop(numero);
+    // pilha.printPilha();
+    // pilha.pop(numero);
+    // pilha.printPilha();
+    //cout<<"/n";
+    // cout << pilha.pilhaEstaVazia()<< "\n";
+    //------TESTE-PILHA-------
     
     
     //------Teste da funcao traduzir string
