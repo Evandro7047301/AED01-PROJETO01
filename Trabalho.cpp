@@ -199,6 +199,30 @@ void Lista<TYPE>::print(){
 }
 //----------------------------LISTA---------------------------------------------
 
+
+//----------------------------PILHA---------------------------------------------
+template<class TYPE>
+//Pilha
+class Pilha: private Lista<TYPE>{
+public:
+    void push(TYPE &data){
+        Lista<TYPE>::inserirFrente(data);
+    }
+
+    bool pop(TYPE &data){
+        return Lista<TYPE>::removerFrente(data);
+    }
+
+    bool pilhaEstaVazia(){
+        return Lista<TYPE>::estaVazia();
+    }
+
+    void printPilha(){
+        Lista<TYPE>::print();
+    }
+};
+//----------------------------PILHA---------------------------------------------
+
 //---------------------------Evandro--------------------------------------------
 
 
