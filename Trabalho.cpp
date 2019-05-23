@@ -351,7 +351,23 @@ int main(){
     // cout << pilha.pilhaEstaVazia()<< "\n";
     //------TESTE-PILHA-------
     
-    
+    // // ------TESTE-FILA------
+    // Fila<int> fila;
+    // int numero01 = 1;
+    // int numero02 = 2;
+    // fila.enfileira(numero01);
+    // fila.printFila();
+    // fila.enfileira(numero02);
+    // fila.printFila();
+    // fila.desenfileira(numero02);
+    // fila.printFila();
+    // fila.desenfileira(numero01);
+    // fila.printFila();
+    // cout<<"\n";
+    // cout << fila.filaEstaVazia()<< "\n";
+    // // ------TESTE-FILA-------
+
+        
     //------Teste da funcao traduzir string
     //cout << traduzirString();
     //------Teste da funcao traduzir string
