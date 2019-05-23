@@ -2,7 +2,7 @@
 #include <cstdlib>
 #include <cstring>
 using namespace std;
-
+//teste
 //---------------------------Evandro--------------------------------------------
 
 //----------------------------NÓ------------------------------------------------
@@ -337,7 +337,7 @@ int main(){
     // pilha.printPilha();
     // cout<<"/n";
     // cout << pilha.pilhaEstaVazia()<< "\n";
-    // cout << "\n";    
+    // cout << "\n";
     //------TESTE-PILHA-------
 
     //------TESTE-FILA------
