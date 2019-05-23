@@ -52,6 +52,153 @@ private:
 };
 //----------------------------NÓ------------------------------------------------
 
+//----------------------------LISTA---------------------------------------------
+//Construtor Padrao
+template<class TYPE>
+Lista<TYPE>::Lista(){
+    primeiroPtr = 0;
+    ultimoPtr = 0;
+}
+
+//Destrutor
+template<class TYPE>
+
+Lista<TYPE>::~Lista(){
+    //Lista não está vazia
+    if(!estaVazia()){
+        No <TYPE> *atualPtr = primeiroPtr;
+        No <TYPE> *temporarioPtr;
+        //exclui nós restantes
+        while(atualPtr != 0){
+            temporarioPtr = atualPtr;
+            atualPtr = atualPtr->proximoPtr;
+            delete temporarioPtr;
+        }
+    }
+}
+
+
+//insere nó no inicio da lista
+template<class TYPE>
+void Lista<TYPE>::inserirFrente(TYPE &valor){
+    No<TYPE> *novoPtr = getNovoNo(valor); // novo nó
+
+    //Lista está vazia
+    if(estaVazia()){
+        primeiroPtr = ultimoPtr = novoPtr; //nova lista tem apenas um nó
+    }
+    else{
+        novoPtr->proximoPtr = primeiroPtr; // aponta o novo nó para o primeiro nó anterior
+        primeiroPtr = novoPtr; //aponta primeiroPtr para o novo nó
+    }
+}
+
+//insere nó no fim da lista
+template<class TYPE>
+void Lista<TYPE>::inserirAtras(TYPE &valor){
+    No<TYPE> *novoPtr = getNovoNo(valor); // novo nó
+
+    //Lista está vazia
+    if(estaVazia()){
+        primeiroPtr = ultimoPtr = novoPtr; //nova lista tem apenas um nó
+    }
+    else{
+        ultimoPtr-> proximoPtr = novoPtr; // atualiza o ultimo nó anterior
+        ultimoPtr = novoPtr; //novo último nó
+    }
+}
+
+//exclui nó do começo da lista
+template<class TYPE>
+bool Lista<TYPE>::removerFrente(TYPE &valor){
+    //Lista está vazia
+    if(estaVazia()){
+        return false; //exclusao mal sucedida
+    }
+    else{
+        No<TYPE> *temporarioPtr = primeiroPtr;//armazena temporarioPtr para excluir
+
+        //Lista tem um elemento
+        if(primeiroPtr == ultimoPtr){
+            primeiroPtr = ultimoPtr = 0;//nenhum nó permanace depois da exclusao
+        }
+        else{
+            primeiroPtr = primeiroPtr->proximoPtr;//aponta para segundo nó anterior
+        }
+
+
+        valor = temporarioPtr->data;//retorna os dados sendo removidos
+        delete temporarioPtr;//reinvidica nó frontal anterior
+        return true;//exclusao bem sucedida;
+
+    }
+}
+
+
+//exclui nó do fim da lista
+template<class TYPE>
+bool Lista<TYPE>::removerAtras(TYPE &valor){
+    //Lista está vazia
+    if(estaVazia()){
+        return false; //exclusao mal sucedida
+    }
+    else{
+        No<TYPE> *temporarioPtr = ultimoPtr;//armazena temporarioPtr para excluir
+
+        //Lista tem um elemento
+        if(primeiroPtr == ultimoPtr){
+            primeiroPtr = ultimoPtr = 0;//nenhum nó permanace depois da exclusao
+        }
+        else{
+            No<TYPE> *atualPtr = primeiroPtr;
+
+            //localiza do segundo ao último elemento
+            while(atualPtr->proximoPtr != ultimoPtr){
+                atualPtr = atualPtr->proximoPtr;//move para próximo nó
+            }
+
+            ultimoPtr = atualPtr; //remove último nó
+            atualPtr->proximoPtr = 0; //esse é o ultimo nó
+        }
+
+        valor = temporarioPtr->data;//retorna valor do último nó antigo
+        delete temporarioPtr;//reinvidiace o primeiro último nó
+        return true;//exclusao bem sucedida;
+
+    }
+}
+
+//Lista esta vazia?
+template<class TYPE>
+bool Lista<TYPE>::estaVazia(){
+    return primeiroPtr == 0;
+}
+
+//retorna ponteiro para nó recentemente alocado
+template<class TYPE>
+No<TYPE> *Lista<TYPE>::getNovoNo(TYPE &valor){
+    return new No<TYPE>(valor);
+}
+
+//exibe o conteúdo da Lista
+template<class TYPE>
+void Lista<TYPE>::print(){
+    if(estaVazia()){
+        cout<< "A lista está vazia"<<"\n";
+        return;
+    }
+
+    No<TYPE> *atualPtr = primeiroPtr;
+
+    while(atualPtr != 0){
+        cout << atualPtr->data << ' ';
+        atualPtr = atualPtr->proximoPtr;
+    }
+
+    cout << "\n";
+}
+//----------------------------LISTA---------------------------------------------
+
 //---------------------------Evandro--------------------------------------------
 
 
