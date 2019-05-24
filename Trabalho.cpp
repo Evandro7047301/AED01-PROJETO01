@@ -2,8 +2,8 @@
 #include <cstdlib>
 #include <cstring>
 #include <string>
-const int M = 7;
-const int TAM = 5;
+const int PRIMO = 37;
+const int TAM = 11;
 using namespace std;
 //teste
 //---------------------------Evandro--------------------------------------------
@@ -46,7 +46,7 @@ public:
     bool removerAtras(TYPE &);
     bool estaVazia()const;
     void print()const;
-    TYPE busca(const TYPE &);
+    string busca(const string &);
 private:
     No<TYPE> *primeiroPtr;
     No<TYPE> *ultimoPtr;
@@ -203,21 +203,21 @@ void Lista<TYPE>::print()const{
 }
 
 template<class TYPE>
-TYPE Lista<TYPE>::busca(const TYPE &dataRecebida){
-    if(estaVazia()){
-        cout<< "A lista esta vazia"<<"\n";
-        return -1;
-    }
+string Lista<TYPE>::busca(const string &chaveRecebida){
 
     No<TYPE> *atualPtr = primeiroPtr;
 
+    // cout << atualPtr->data.chave;
+
     while(atualPtr != 0){
-        if(atualPtr->data == dataRecebida){
-            return dataRecebida;
+        if(atualPtr->data.chave == chaveRecebida){
+            return atualPtr->data.data;
         }
         atualPtr = atualPtr->proximoPtr;
     }
-    return -1;
+
+    return "-1";
+
 }
 //----------------------------LISTA---------------------------------------------
 
@@ -273,16 +273,35 @@ public:
 
 //----------------------------HASH----------------------------------------------
 
-template <class TYPE>
-class TabelaHash: Lista<TYPE>{
+struct Dupla{
+    string data;
+    string chave;
+};
+
+int strParaInt(string chave){
+    int acumulador = 0;
+    for(int i = 0; i < strlen(chave.c_str()); i++){
+        acumulador += (int)chave[i];
+    }
+    acumulador *= PRIMO;
+    return acumulador;
+}
+
+int h(string chave){
+
+    return strParaInt(chave) % TAM;
+}
+
+
+class TabelaHash: Lista<Dupla>{
 
 public:
 
-    Lista<TYPE> th[TAM];
+    Lista<Dupla> th[TAM];
 
     TabelaHash(){
         for(int i = 0; i < TAM; i++){
-            Lista<TYPE> lista;
+            Lista<Dupla> lista;
             th[i] = lista;
         }
 
@@ -290,20 +309,19 @@ public:
 
     ~TabelaHash(){};
 
+    void inserirElemento(const string &chave, const string &data){
+        int i = h(chave);
+        // cout<< "i:"<<i<<"\n";
+        Dupla dupla = {data,chave};
 
-    int h(TYPE &chave){
-        return (int)chave % M;
-
+        th[i].inserirAtras(dupla);
     }
 
-    void inserirElemento(const TYPE &data, const TYPE &chave){
-        int i = h(chave);
-        th[i].inserirAtras(data);
-    }
 
-    TYPE buscarElemento(const TYPE &data, const TYPE &chave){
+     string buscarElemento(const string &chave){
+        string chaveStr = chave;
         int i = h(chave);
-        th[i].busca(data);
+        return th[i].busca(chaveStr);
     }
 
 
@@ -347,15 +365,12 @@ public:
 
 
 //---------------------------Evandro--------------------------------------------
-string traduzirCaractere(string chave, char dicionario[][4]){
-    for(int i = 0; i < 56; i++){
-        if(chave == dicionario[i]){
-            return dicionario[i+1];
-        }
-    }
+string traduzirCaractere(string chave, TabelaHash &hash){
+    return hash.buscarElemento(chave);
 }
 
-string traduzirLinha(string palavra, char dicionario[][4]){
+string traduzirLinha(string palavra, TabelaHash &hash){
+
     // cout<<"funcao"<<endl;
     // cout<< strlen(palavra.c_str()) << endl;
 
@@ -371,7 +386,7 @@ string traduzirLinha(string palavra, char dicionario[][4]){
             // cout << tmp << traduzirCaractere(tmp,dicionario) << endl;
 
 
-            traduzido += traduzirCaractere(tmp, dicionario);
+            traduzido += traduzirCaractere(tmp, hash);
             // cout<< traduzido<< endl;
             tmp = "";
         }
@@ -386,33 +401,94 @@ string traduzirLinha(string palavra, char dicionario[][4]){
 
 }
 
-string traduzirString(){
-    const int TAM = 100;
-    char vetor[][4] = {":::","A",".::","B",":.:","C","::.","D",":..","E",".:.","F","..:","G","...","H","|::","I",":|:","J","::|","K","|.:","L",".|:","M",".:|","N","|:.","O",":|.","P",":.|","Q","|..","R",".|.","S","..|","T",".||","U","|.|","V","||.","W","-.-","X",".--","Y","--.","Z","---"," ","~","~"};
+string traduzirString(TabelaHash &hash){
+    // const int TAM = 100;
+    // char vetor[][4] = {":::","A",".::","B",":.:","C","::.","D",":..","E",".:.","F","..:","G","...","H","|::","I",":|:","J","::|","K","|.:","L",".|:","M",".:|","N","|:.","O",":|.","P",":.|","Q","|..","R",".|.","S","..|","T",".||","U","|.|","V","||.","W","-.-","X",".--","Y","--.","Z","---"," ","~","~"};
 
-    string traduzido;
 
-    string recebido;
+
+    string traduzido = "";
+
+    string recebido = "";
 
     while(true){
 
         getline(cin, recebido);
+
         if(recebido == "~"){
             traduzido += "~";
             break;
         }
-        traduzido += traduzirLinha(recebido, vetor) + "\n";
+        traduzido += traduzirLinha(recebido, hash) + "\n";
     }
 
     return traduzido;
 }
+
 int main(){
 //---------------------------Evandro--------------------------------------------
-    // TabelaHash<string> hash;
+    TabelaHash hash;
+
+    Dupla dupla = {"teste1","test2"};
+
+    // cout << dupla.chave;
+
+
+
+    hash.inserirElemento (":::", "A");
+
+    hash.inserirElemento (":::", "A");
+    hash.inserirElemento (".::", "B");
+    hash.inserirElemento (":.:", "C");
+    hash.inserirElemento ("::.", "D");
+    hash.inserirElemento (":..", "E");
+    hash.inserirElemento (".:.", "F");
+    hash.inserirElemento ("..:", "G");
+    hash.inserirElemento ("...", "H");
+    hash.inserirElemento ("|::", "I");
+    hash.inserirElemento (":|:", "J");
+    hash.inserirElemento ("::|", "K");
+    hash.inserirElemento ("|.:", "L");
+    hash.inserirElemento (".|:", "M");
+    hash.inserirElemento (".:|", "N");
+    hash.inserirElemento ("|:.", "O");
+    hash.inserirElemento (":|.", "P");
+    hash.inserirElemento (":.|", "Q");
+    hash.inserirElemento ("|..", "R");
+    hash.inserirElemento (".|.", "S");
+    hash.inserirElemento ("..|", "T");
+    hash.inserirElemento (".||", "U");
+    hash.inserirElemento ("|.|", "V");
+    hash.inserirElemento ("||.", "W");
+    hash.inserirElemento ("-.-", "X");
+    hash.inserirElemento (".--", "Y");
+    hash.inserirElemento ("--.", "Z");
+    hash.inserirElemento ("---", " ");
+    hash.inserirElemento ("~", "~");
+
+    //------Teste da funcao traduzir string
+    cout << traduzirString(hash);
+    //------Teste da funcao traduzir string
+
+
+
+
+
+
+    // cout << hash.busca(".::");
+
+    // string a = "teste01";
+    // string b = "teste01";
     //
+    // string lista[2];
+    // lista[0] = a;
+    // lista[1] = b;
     //
-    // hash.inserirElemento("A", "teste");
-    // cout << hash.buscarElemento("A", "teste");
+    // cout<< lista[0];
+
+
+
+    // hash.buscarElemtno(".::")
 
 
 
@@ -462,6 +538,7 @@ int main(){
     //------Teste da funcao traduzir string
     //cout << traduzirString();
     //------Teste da funcao traduzir string
+
     //-dicionario-//
     // tabelaHash th;
     // th.insere (":::", "A");
