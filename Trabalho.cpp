@@ -3,7 +3,7 @@
 #include <cstring>
 #include <string>
 const int PRIMO = 37;
-const int TAM = 11;
+const int TAM = 7;
 using namespace std;
 //teste
 //---------------------------Evandro--------------------------------------------
@@ -211,7 +211,7 @@ string Lista<TYPE>::busca(const string &chaveRecebida){
 
     while(atualPtr != 0){
         if(atualPtr->data.chave == chaveRecebida){
-            return atualPtr->data.data;
+            return atualPtr->data.simbolo;
         }
         atualPtr = atualPtr->proximoPtr;
     }
@@ -274,7 +274,7 @@ public:
 //----------------------------HASH----------------------------------------------
 
 struct Dupla{
-    string data;
+    string simbolo;
     string chave;
 };
 
@@ -327,27 +327,6 @@ public:
 
 
 };
-
-
-
-
-// template<class TYPE>
-// void teste(){
-//     Lista<int> vetor[TAM];
-//
-//     for(int i = 0; i < 3; i++){
-//         Lista<int> fila;
-//         vetor[i] = fila;
-//     }
-//
-//     int numero = 3;
-//     vetor[0].inserirAtras(numero);
-//     vetor[0].print();
-//
-//     vetor[1].inserirAtras(numero);
-//     vetor[1].inserirAtras(numero);
-//     vetor[1].print();
-// }
 
 //----------------------------HASH----------------------------------------------
 //---------------------------Evandro--------------------------------------------
@@ -429,13 +408,7 @@ int main(){
 //---------------------------Evandro--------------------------------------------
     TabelaHash hash;
 
-    Dupla dupla = {"teste1","test2"};
-
     // cout << dupla.chave;
-
-
-
-    hash.inserirElemento (":::", "A");
 
     hash.inserirElemento (":::", "A");
     hash.inserirElemento (".::", "B");
