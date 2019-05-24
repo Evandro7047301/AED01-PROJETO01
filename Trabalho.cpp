@@ -1,6 +1,9 @@
 #include <iostream>
 #include <cstdlib>
 #include <cstring>
+#include <string>
+const int M = 7;
+const int TAM = 5;
 using namespace std;
 //teste
 //---------------------------Evandro--------------------------------------------
@@ -9,15 +12,15 @@ using namespace std;
 template <class TYPE>
 class No{
 public:
-    No(TYPE &);
-    TYPE getData();
+    No(const TYPE &);
+    TYPE getData()const;
 
     TYPE data;
     No<TYPE> *proximoPtr;//proximo no da lista
 };
 
 template<class TYPE>
-No<TYPE>::No(TYPE &info)
+No<TYPE>::No(const TYPE &info)
 {
     data = info;
     proximoPtr = 0;
@@ -25,7 +28,7 @@ No<TYPE>::No(TYPE &info)
 
 template<class TYPE>
 
-TYPE No<TYPE>::getData(){
+TYPE No<TYPE>::getData()const{
     return data;
 }
 
@@ -37,18 +40,19 @@ public:
     Lista();//construtor
     ~Lista();//destrutor
 
-    void inserirFrente(TYPE &);
-    void inserirAtras(TYPE &);
+    void inserirFrente(const TYPE &);
+    void inserirAtras(const TYPE &);
     bool removerFrente(TYPE &);
     bool removerAtras(TYPE &);
-    bool estaVazia();
-    void print();
+    bool estaVazia()const;
+    void print()const;
+    TYPE busca(const TYPE &);
 private:
     No<TYPE> *primeiroPtr;
     No<TYPE> *ultimoPtr;
 
     //Alocar novo no;
-    No<TYPE> *getNovoNo(TYPE &);
+    No<TYPE> *getNovoNo(const TYPE &);
 };
 //----------------------------NÓ------------------------------------------------
 
@@ -80,7 +84,7 @@ Lista<TYPE>::~Lista(){
 
 //insere nó no inicio da lista
 template<class TYPE>
-void Lista<TYPE>::inserirFrente(TYPE &valor){
+void Lista<TYPE>::inserirFrente(const TYPE &valor){
     No<TYPE> *novoPtr = getNovoNo(valor); // novo nó
 
     //Lista está vazia
@@ -95,7 +99,7 @@ void Lista<TYPE>::inserirFrente(TYPE &valor){
 
 //insere nó no fim da lista
 template<class TYPE>
-void Lista<TYPE>::inserirAtras(TYPE &valor){
+void Lista<TYPE>::inserirAtras(const TYPE &valor){
     No<TYPE> *novoPtr = getNovoNo(valor); // novo nó
 
     //Lista está vazia
@@ -170,19 +174,19 @@ bool Lista<TYPE>::removerAtras(TYPE &valor){
 
 //Lista esta vazia?
 template<class TYPE>
-bool Lista<TYPE>::estaVazia(){
+bool Lista<TYPE>::estaVazia()const{
     return primeiroPtr == 0;
 }
 
 //retorna ponteiro para nó recentemente alocado
 template<class TYPE>
-No<TYPE> *Lista<TYPE>::getNovoNo(TYPE &valor){
+No<TYPE> *Lista<TYPE>::getNovoNo(const TYPE &valor){
     return new No<TYPE>(valor);
 }
 
 //exibe o conteúdo da Lista
 template<class TYPE>
-void Lista<TYPE>::print(){
+void Lista<TYPE>::print()const{
     if(estaVazia()){
         cout<< "A lista esta vazia"<<"\n";
         return;
@@ -197,6 +201,24 @@ void Lista<TYPE>::print(){
 
     cout << "\n";
 }
+
+template<class TYPE>
+TYPE Lista<TYPE>::busca(const TYPE &dataRecebida){
+    if(estaVazia()){
+        cout<< "A lista esta vazia"<<"\n";
+        return -1;
+    }
+
+    No<TYPE> *atualPtr = primeiroPtr;
+
+    while(atualPtr != 0){
+        if(atualPtr->data == dataRecebida){
+            return dataRecebida;
+        }
+        atualPtr = atualPtr->proximoPtr;
+    }
+    return -1;
+}
 //----------------------------LISTA---------------------------------------------
 
 
@@ -205,7 +227,7 @@ template<class TYPE>
 //Pilha
 class Pilha: private Lista<TYPE>{
 public:
-    void push(TYPE &data){
+    void push(const TYPE &data){
         Lista<TYPE>::inserirFrente(data);
     }
 
@@ -217,7 +239,7 @@ public:
         return Lista<TYPE>::estaVazia();
     }
 
-    void printPilha(){
+    void printPilha()const{
         Lista<TYPE>::print();
     }
 };
@@ -229,7 +251,7 @@ template <class TYPE>
 class Fila: private Lista<TYPE>{
 public:
 
-    void enfileira(TYPE &data){
+    void enfileira(const TYPE &data){
         Lista<TYPE>::inserirFrente(data);
     }
 
@@ -241,13 +263,75 @@ public:
         return Lista<TYPE>::estaVazia();
     }
 
-    void printFila(){
+    void printFila()const{
         Lista<TYPE>::print();
     }
 };
 
 //----------------------------FILA----------------------------------------------
 
+
+//----------------------------HASH----------------------------------------------
+
+template <class TYPE>
+class TabelaHash: Lista<TYPE>{
+
+public:
+
+    Lista<TYPE> th[TAM];
+
+    TabelaHash(){
+        for(int i = 0; i < TAM; i++){
+            Lista<TYPE> lista;
+            th[i] = lista;
+        }
+
+    }
+
+    ~TabelaHash(){};
+
+
+    int h(TYPE &chave){
+        return (int)chave % M;
+
+    }
+
+    void inserirElemento(const TYPE &data, const TYPE &chave){
+        int i = h(chave);
+        th[i].inserirAtras(data);
+    }
+
+    TYPE buscarElemento(const TYPE &data, const TYPE &chave){
+        int i = h(chave);
+        th[i].busca(data);
+    }
+
+
+
+};
+
+
+
+
+// template<class TYPE>
+// void teste(){
+//     Lista<int> vetor[TAM];
+//
+//     for(int i = 0; i < 3; i++){
+//         Lista<int> fila;
+//         vetor[i] = fila;
+//     }
+//
+//     int numero = 3;
+//     vetor[0].inserirAtras(numero);
+//     vetor[0].print();
+//
+//     vetor[1].inserirAtras(numero);
+//     vetor[1].inserirAtras(numero);
+//     vetor[1].print();
+// }
+
+//----------------------------HASH----------------------------------------------
 //---------------------------Evandro--------------------------------------------
 
 
@@ -324,29 +408,45 @@ string traduzirString(){
 }
 int main(){
 //---------------------------Evandro--------------------------------------------
-    //------TESTE-PILHA------
+    // TabelaHash<string> hash;
+    //
+    //
+    // hash.inserirElemento("A", "teste");
+    // cout << hash.buscarElemento("A", "teste");
+
+
+
+    // //TesteBusca
+    // Lista<int> lista;
+    // int numero = 0;
+    // lista.inserirAtras(0);
+    // int numero02 = 1;
+    // cout<<lista.busca(1)<< "\n";
+    // //TesteBusca
+
+    // // //------TESTE-PILHA------
     // Pilha<int> pilha;
     // int numero = 1;
-    // pilha.push(numero);
+    // pilha.push(1);
     // pilha.printPilha();
-    // pilha.push(numero);
-    // pilha.printPilha();
-    // pilha.pop(numero);
+    // pilha.push(1);
     // pilha.printPilha();
     // pilha.pop(numero);
     // pilha.printPilha();
-    // cout<<"/n";
+    // pilha.pop(numero);
+    // pilha.printPilha();
+    // cout<<"\n";
     // cout << pilha.pilhaEstaVazia()<< "\n";
     // cout << "\n";
-    //------TESTE-PILHA-------
+    // // // ------TESTE-PILHA-------
 
-    //------TESTE-FILA------
+    // //------TESTE-FILA------
     // Fila<int> fila;
     // int numero01 = 1;
     // int numero02 = 2;
-    // fila.enfileira(numero01);
+    // fila.enfileira(1);
     // fila.printFila();
-    // fila.enfileira(numero02);
+    // fila.enfileira(1);
     // fila.printFila();
     // fila.desenfileira(numero02);
     // fila.printFila();
@@ -355,7 +455,7 @@ int main(){
     // cout<<"\n";
     // cout << fila.filaEstaVazia()<< "\n";
     // cout << "\n";
-    //------TESTE-FILA-------
+    // //------TESTE-FILA-------
 
 
 
