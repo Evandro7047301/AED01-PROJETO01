@@ -203,9 +203,10 @@ void Lista<TYPE>::print()const{
     while(atualPtr != 0){
         cout << atualPtr->data << ' ';
         atualPtr = atualPtr->proximoPtr;
+        cout << "\n";
+
     }
 
-    cout << "\n";
 }
 
 template<class TYPE>
@@ -388,7 +389,7 @@ string traduzirLinha(string palavra, TabelaHash &hash){
         tmp += palavra[i];
         // cout << tmp << endl;
         // cout << i;
-        if(strlen(tmp.c_str()) == 3){
+        if(strlen(tmp.c_str()) == 3 && tmp != ":"){
             // cout << tmp << traduzirCaractere(tmp,dicionario) << endl;
 
 
@@ -397,7 +398,7 @@ string traduzirLinha(string palavra, TabelaHash &hash){
             tmp = "";
         }
 
-        if((i + 1) == strlen(palavra.c_str()) && tmp == ":"){
+        else if((i + 1) == strlen(palavra.c_str()) && tmp == ":"){
             traduzido += tmp;
             break;
         }
@@ -407,7 +408,7 @@ string traduzirLinha(string palavra, TabelaHash &hash){
 
 }
 
-string traduzirString(TabelaHash &hash, Lista<string> &lista){
+void traduzirString(TabelaHash &hash, Lista<string> &lista){
     // const int TAM = 100;
     // char vetor[][4] = {":::","A",".::","B",":.:","C","::.","D",":..","E",".:.","F","..:","G","...","H","|::","I",":|:","J","::|","K","|.:","L",".|:","M",".:|","N","|:.","O",":|.","P",":.|","Q","|..","R",".|.","S","..|","T",".||","U","|.|","V","||.","W","-.-","X",".--","Y","--.","Z","---"," ","~","~"};
 
@@ -419,16 +420,14 @@ string traduzirString(TabelaHash &hash, Lista<string> &lista){
 
     while(true){
 
-        getline(cin, recebido);
+        cin >> recebido;
 
         if(recebido == "~"){
             lista.inserirAtras("~");
             break;
         }
-        lista.inserirAtras(traduzirLinha(recebido, hash) + "\n");
+        lista.inserirAtras(traduzirLinha(recebido, hash));
     }
-
-    return traduzido;
 }
 
 int main(){
@@ -466,24 +465,13 @@ int main(){
     hash.inserirElemento ("---", " ");
     hash.inserirElemento ("~", "~");
 
-    //------Teste da funcao traduzir string
-    //------Teste da funcao traduzir string
 
+
+    //------Teste da funcao traduzir string
     Lista<string> lista;
-
     traduzirString(hash, lista);
-
-
-    // lista.print();
-    // cout << lista.tamanho;
-    lista.get(1);
-    for(int i = 0; i <= lista.tamanho; i++){
-        cout<<i;
-        cout<< lista.get(i);
-    }
-
-
-
+    lista.print();
+    //------Teste da funcao traduzir string
 
 
 
@@ -548,7 +536,7 @@ int main(){
 
 
     //------Teste da funcao traduzir string
-    //cout << traduzirString();
+    // cout << traduzirString();
     //------Teste da funcao traduzir string
 
     //-dicionario-//
