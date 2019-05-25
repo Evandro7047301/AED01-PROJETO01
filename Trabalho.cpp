@@ -306,6 +306,7 @@ struct Dupla{
     string chave;
 };
 
+
 int strParaInt(string chave){
     int acumulador = 0;
     for(int i = 0; i < strlen(chave.c_str()); i++){
@@ -373,6 +374,7 @@ public:
 
 //---------------------------Evandro--------------------------------------------
 string traduzirCaractere(string chave, TabelaHash &hash){
+    // cout<<chave<<"/"<<"\n";
     return hash.buscarElemento(chave);
 }
 
@@ -384,23 +386,20 @@ string traduzirLinha(string palavra, TabelaHash &hash){
 
     string tmp = "";
     string traduzido = "";
+    // cout<<strlen(palavra.c_str());
 
     for(int i = 0; i < strlen(palavra.c_str()); i++){
         tmp += palavra[i];
         // cout << tmp << endl;
         // cout << i;
-        if(strlen(tmp.c_str()) == 3 && tmp != ":"){
+        // cout<< i;
+        if(strlen(tmp.c_str()) == 3){
             // cout << tmp << traduzirCaractere(tmp,dicionario) << endl;
 
 
             traduzido += traduzirCaractere(tmp, hash);
             // cout<< traduzido<< endl;
             tmp = "";
-        }
-
-        else if((i + 1) == strlen(palavra.c_str()) && tmp == ":"){
-            traduzido += tmp;
-            break;
         }
 
     }
@@ -420,7 +419,8 @@ void traduzirString(TabelaHash &hash, Lista<string> &lista){
 
     while(true){
 
-        cin >> recebido;
+
+        getline(cin,recebido);
 
         if(recebido == "~"){
             lista.inserirAtras("~");
@@ -429,6 +429,13 @@ void traduzirString(TabelaHash &hash, Lista<string> &lista){
         lista.inserirAtras(traduzirLinha(recebido, hash));
     }
 }
+
+//Struct auxiliar a funcao de reconhecer instrucoes
+struct Intrucao{
+    string comando;
+    string letra;
+};
+
 
 int main(){
 //---------------------------Evandro--------------------------------------------
@@ -463,6 +470,7 @@ int main(){
     hash.inserirElemento (".--", "Y");
     hash.inserirElemento ("--.", "Z");
     hash.inserirElemento ("---", " ");
+    hash.inserirElemento (":  ", ":");
     hash.inserirElemento ("~", "~");
 
 
