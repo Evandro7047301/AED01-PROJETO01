@@ -47,6 +47,7 @@ public:
     bool estaVazia()const;
     void print()const;
     string busca(const string &);
+    TYPE get(const int &);
 private:
     No<TYPE> *primeiroPtr;
     No<TYPE> *ultimoPtr;
@@ -217,6 +218,26 @@ string Lista<TYPE>::busca(const string &chaveRecebida){
     }
 
     return "-1";
+
+}
+
+template<class TYPE>
+TYPE Lista<TYPE>::get(const int &indice){
+
+    No<TYPE> *atualPtr = primeiroPtr;
+
+    // cout << atualPtr->data.chave;
+    int contador = 0;
+
+    while(atualPtr != 0){
+        if(contador == indice){
+            return atualPtr->data;
+        }
+        contador += 1;
+        atualPtr = atualPtr->proximoPtr;
+    }
+
+    return -1;
 
 }
 //----------------------------LISTA---------------------------------------------
@@ -440,9 +461,17 @@ int main(){
     hash.inserirElemento ("~", "~");
 
     //------Teste da funcao traduzir string
-    cout << traduzirString(hash);
+    // cout << traduzirString(hash);
     //------Teste da funcao traduzir string
 
+    Lista<int> lista;
+
+    lista.inserirAtras(1);
+    lista.inserirAtras(2);
+    lista.inserirAtras(3);
+    lista.inserirAtras(4);
+    // lista.print();
+    cout<< lista.get() << "\n";
 
 
 
