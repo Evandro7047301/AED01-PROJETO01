@@ -31,7 +31,9 @@ template<class TYPE>
 TYPE No<TYPE>::getData()const{
     return data;
 }
+//----------------------------NÓ------------------------------------------------
 
+//----------------------------LISTA---------------------------------------------
 template<class TYPE>
 
 class Lista{
@@ -39,7 +41,7 @@ class Lista{
 public:
     Lista();//construtor
     ~Lista();//destrutor
-
+    int tamanho;
     void inserirFrente(const TYPE &);
     void inserirAtras(const TYPE &);
     bool removerFrente(TYPE &);
@@ -47,7 +49,8 @@ public:
     bool estaVazia()const;
     void print()const;
     string busca(const string &);
-    TYPE get(const int &);
+    string get(const int &);
+
 private:
     No<TYPE> *primeiroPtr;
     No<TYPE> *ultimoPtr;
@@ -55,12 +58,11 @@ private:
     //Alocar novo no;
     No<TYPE> *getNovoNo(const TYPE &);
 };
-//----------------------------NÓ------------------------------------------------
 
-//----------------------------LISTA---------------------------------------------
 //Construtor Padrao
 template<class TYPE>
 Lista<TYPE>::Lista(){
+    tamanho = 0;
     primeiroPtr = 0;
     ultimoPtr = 0;
 }
@@ -93,6 +95,7 @@ void Lista<TYPE>::inserirFrente(const TYPE &valor){
         primeiroPtr = ultimoPtr = novoPtr; //nova lista tem apenas um nó
     }
     else{
+        tamanho += 1;
         novoPtr->proximoPtr = primeiroPtr; // aponta o novo nó para o primeiro nó anterior
         primeiroPtr = novoPtr; //aponta primeiroPtr para o novo nó
     }
@@ -108,6 +111,7 @@ void Lista<TYPE>::inserirAtras(const TYPE &valor){
         primeiroPtr = ultimoPtr = novoPtr; //nova lista tem apenas um nó
     }
     else{
+        tamanho += 1;
         ultimoPtr-> proximoPtr = novoPtr; // atualiza o ultimo nó anterior
         ultimoPtr = novoPtr; //novo último nó
     }
@@ -131,7 +135,7 @@ bool Lista<TYPE>::removerFrente(TYPE &valor){
             primeiroPtr = primeiroPtr->proximoPtr;//aponta para segundo nó anterior
         }
 
-
+        tamanho -= 1;
         valor = temporarioPtr->data;//retorna os dados sendo removidos
         delete temporarioPtr;//reinvidica nó frontal anterior
         return true;//exclusao bem sucedida;
@@ -166,6 +170,7 @@ bool Lista<TYPE>::removerAtras(TYPE &valor){
             atualPtr->proximoPtr = 0; //esse é o ultimo nó
         }
 
+        tamanho -= 1;
         valor = temporarioPtr->data;//retorna valor do último nó antigo
         delete temporarioPtr;//reinvidiace o primeiro último nó
         return true;//exclusao bem sucedida;
@@ -222,7 +227,7 @@ string Lista<TYPE>::busca(const string &chaveRecebida){
 }
 
 template<class TYPE>
-TYPE Lista<TYPE>::get(const int &indice){
+string Lista<TYPE>::get(const int &indice){
 
     No<TYPE> *atualPtr = primeiroPtr;
 
@@ -237,9 +242,10 @@ TYPE Lista<TYPE>::get(const int &indice){
         atualPtr = atualPtr->proximoPtr;
     }
 
-    return -1;
+    return "-1";
 
 }
+
 //----------------------------LISTA---------------------------------------------
 
 
@@ -401,7 +407,7 @@ string traduzirLinha(string palavra, TabelaHash &hash){
 
 }
 
-string traduzirString(TabelaHash &hash){
+string traduzirString(TabelaHash &hash, Lista<string> &lista){
     // const int TAM = 100;
     // char vetor[][4] = {":::","A",".::","B",":.:","C","::.","D",":..","E",".:.","F","..:","G","...","H","|::","I",":|:","J","::|","K","|.:","L",".|:","M",".:|","N","|:.","O",":|.","P",":.|","Q","|..","R",".|.","S","..|","T",".||","U","|.|","V","||.","W","-.-","X",".--","Y","--.","Z","---"," ","~","~"};
 
@@ -416,10 +422,10 @@ string traduzirString(TabelaHash &hash){
         getline(cin, recebido);
 
         if(recebido == "~"){
-            traduzido += "~";
+            lista.inserirAtras("~");
             break;
         }
-        traduzido += traduzirLinha(recebido, hash) + "\n";
+        lista.inserirAtras(traduzirLinha(recebido, hash) + "\n");
     }
 
     return traduzido;
@@ -461,17 +467,21 @@ int main(){
     hash.inserirElemento ("~", "~");
 
     //------Teste da funcao traduzir string
-    // cout << traduzirString(hash);
     //------Teste da funcao traduzir string
 
-    Lista<int> lista;
+    Lista<string> lista;
 
-    lista.inserirAtras(1);
-    lista.inserirAtras(2);
-    lista.inserirAtras(3);
-    lista.inserirAtras(4);
+    traduzirString(hash, lista);
+
+
     // lista.print();
-    cout<< lista.get() << "\n";
+    // cout << lista.tamanho;
+    lista.get(1);
+    for(int i = 0; i <= lista.tamanho; i++){
+        cout<<i;
+        cout<< lista.get(i);
+    }
+
 
 
 
