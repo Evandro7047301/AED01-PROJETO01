@@ -284,7 +284,7 @@ public:
     }
 
     bool desenfileira(TYPE &data){
-        Lista<TYPE>::removerFrente(data);
+        return Lista<TYPE>::removerFrente(data);
     }
 
     bool filaEstaVazia(){
@@ -309,7 +309,8 @@ struct Dupla{
 
 int strParaInt(string chave){
     int acumulador = 0;
-    for(int i = 0; i < strlen(chave.c_str()); i++){
+    int chaveTam = strlen(chave.c_str());
+    for(int i = 0; i < chaveTam; i++){
         acumulador += (int)chave[i];
     }
     acumulador *= PRIMO;
@@ -387,8 +388,8 @@ string traduzirLinha(string palavra, TabelaHash &hash){
     string tmp = "";
     string traduzido = "";
     // cout<<strlen(palavra.c_str());
-
-    for(int i = 0; i < strlen(palavra.c_str()); i++){
+    int palavraTam = strlen(palavra.c_str());
+    for(int i = 0; i < palavraTam; i++){
         tmp += palavra[i];
         // cout << tmp << endl;
         // cout << i;
@@ -479,9 +480,9 @@ int main(){
     Lista<string> lista;
     traduzirString(hash, lista);
     lista.print();
+    // cout << lista.get(3);
+
     //------Teste da funcao traduzir string
-
-
 
     // cout << hash.busca(".::");
 
