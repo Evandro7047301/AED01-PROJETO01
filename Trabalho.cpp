@@ -44,7 +44,7 @@ public:
     int tamanho;
     void inserirFrente(const TYPE &);
     void inserirAtras(const TYPE &);
-    bool removerFrente(TYPE &);
+    bool removerFrente();
     bool removerAtras(TYPE &);
     bool estaVazia()const;
     void print()const;
@@ -119,7 +119,7 @@ void Lista<TYPE>::inserirAtras(const TYPE &valor){
 
 //exclui nó do começo da lista
 template<class TYPE>
-bool Lista<TYPE>::removerFrente(TYPE &valor){
+bool Lista<TYPE>::removerFrente(){
     //Lista está vazia
     if(estaVazia()){
         return false; //exclusao mal sucedida
@@ -136,7 +136,7 @@ bool Lista<TYPE>::removerFrente(TYPE &valor){
         }
 
         tamanho -= 1;
-        valor = temporarioPtr->data;//retorna os dados sendo removidos
+        // valor = temporarioPtr->data;//retorna os dados sendo removidos
         delete temporarioPtr;//reinvidica nó frontal anterior
         return true;//exclusao bem sucedida;
 
@@ -201,12 +201,11 @@ void Lista<TYPE>::print()const{
     No<TYPE> *atualPtr = primeiroPtr;
 
     while(atualPtr != 0){
-        cout << atualPtr->data << ' ';
+        cout << atualPtr->data;
         atualPtr = atualPtr->proximoPtr;
-        cout << "\n";
+        // cout << "\n";
 
     }
-
 }
 
 template<class TYPE>
@@ -280,11 +279,11 @@ class Fila: private Lista<TYPE>{
 public:
 
     void enfileira(const TYPE &data){
-        Lista<TYPE>::inserirFrente(data);
+        Lista<TYPE>::inserirAtras(data);
     }
 
-    bool desenfileira(TYPE &data){
-        return Lista<TYPE>::removerFrente(data);
+    bool desenfileira(){
+        return Lista<TYPE>::removerFrente();
     }
 
     bool filaEstaVazia(){
@@ -438,6 +437,149 @@ struct Intrucao{
 };
 
 
+bool estaContido(string palavra01, const char *palavra02){
+    // cout << palavra01 << "=="<< palavra02<<endl;
+
+    int tamPalavra01 = strlen(palavra01.c_str());
+    int tamPalavra02 = strlen(palavra02);
+
+    int ver = strlen(palavra02);
+    int acumulador = 0;
+
+    for(int i = 0; i < tamPalavra01; i++){
+        if(palavra01[i] == palavra02[0] ){
+
+            for(int j = 0; j < tamPalavra02; j++){
+
+                if(palavra01[i + j] == palavra02[j]){
+                    // cout << acumulador;
+                    // cout << palavra01[i + j] << " / " << palavra02[j]<< endl;
+                    acumulador += 1;
+                    // cout << acumulador <<" / "<< ver << endl;
+
+                }
+                if(acumulador == ver){
+                    // cout<< "true"<<endl;
+                    return true;
+                }
+
+            }
+            break;
+        }
+    }
+    return false;
+}
+
+
+char pegarLetra(string comando){
+    int comandoTam = strlen(comando.c_str());
+
+    for(int i = 0; i < comandoTam; i++){
+        if(comando[i] == 'E'){
+
+            return comando[i+10];
+        }
+    }
+
+    return '\0';
+}
+
+bool executarComando(string comando, Fila<char> &fila){
+    const char *DESENFILEIRA = "DESENFILEIRA";
+    const char *ENFILEIRA = "ENFILEIRA";
+    // cout <<"comando:" << comando << " / ";
+
+    if(estaContido(comando, DESENFILEIRA)){
+        // cout << "DESENFILEIRA" << '\n';
+        fila.desenfileira();
+        return true;
+    }
+
+    if(estaContido(comando, ENFILEIRA)){
+        // cout << "ENFILEIRA" << '\n';
+        // cout << pegarLetra(comando) << '\n';
+        fila.enfileira(pegarLetra(comando));
+        // fila.printFila();
+        return true;
+    }
+    // cout << "\n";
+    return false;
+}
+
+bool buscarFuncao(string linha, Lista<string> &lista){
+    linha += " :";
+    string linhaTmp;
+    linhaTmp += linha[2];
+    linhaTmp += linha[3];
+    linhaTmp += linha[4];
+
+    for(int i = 0; i < lista.tamanho; i++){
+        if(estaContido(lista.get(i), linhaTmp.c_str())){
+            // cout<<"linhatmp" << linhaTmp<< endl;
+            return true;
+        }
+    }
+    return false;
+}
+
+int buscarIndiceFuncao(string linha, Lista<string> &lista){
+    linha += " :";
+    string linhaTmp;
+    linhaTmp += linha[2];
+    linhaTmp += linha[3];
+    linhaTmp += linha[4];
+    for(int i = 0; i < lista.tamanho; i++){
+        if(estaContido(lista.get(i), linhaTmp.c_str())){
+            return i;
+        }
+    }
+    return -1;
+}
+
+
+bool executarFuncao(string funcao, Fila<char> &fila, Lista<string> &lista){
+    const char *DESENFILEIRA = "DESENFILEIRA";
+    const char *ENFILEIRA = "ENFILEIRA";
+    funcao += " :";
+    string linha;
+    // cout << funcao << endl;
+
+
+    int i = 0;
+    // cout << lista.get(0);
+
+    while(true){
+        i = buscarIndiceFuncao(funcao, lista);
+        linha = lista.get(i);
+        // cout << linha << endl;
+
+        // cout << "Funcao: "<<linha<< endl;
+        while(true){
+            i++;
+            linha = lista.get(i);
+            if(estaContido(linha, DESENFILEIRA) || estaContido(linha, ENFILEIRA)){
+                // cout << linha << endl;
+                executarComando(linha,fila);
+                // fila.printFila();
+            }
+
+            else if(buscarFuncao(linha, lista)){
+                executarFuncao(linha, fila, lista);
+            }
+
+            else{
+                // cout<< "Acaba codigo"<< linha << endl;
+                return true;
+            }
+
+        }
+    //
+    i++;
+    }
+    return false;
+
+}
+
 int main(){
 //---------------------------Evandro--------------------------------------------
     TabelaHash hash;
@@ -478,8 +620,21 @@ int main(){
 
     //------Teste da funcao traduzir string
     Lista<string> lista;
+    Fila<char> fila;
+
     traduzirString(hash, lista);
-    lista.print();
+    // lista.print();
+
+    // cout << lista.get(3);
+
+
+    executarFuncao("  Z", fila, lista);
+
+    // cout<<"final" << endl;
+    fila.printFila();
+
+
+
     // cout << lista.get(3);
 
     //------Teste da funcao traduzir string
@@ -498,8 +653,6 @@ int main(){
 
 
     // hash.buscarElemtno(".::")
-
-
 
     // //TesteBusca
     // Lista<int> lista;
